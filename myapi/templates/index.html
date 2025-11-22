@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Invoice API — Frontend</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+  </head>
+
+  <body>
+    <div class="top-bar">
+      <h1>Invoice Manager</h1>
+      <button id="themeToggle" class="btn small-btn">🌙 Dark</button>
+    </div>
+
+    <div class="container">
+      <!-- Create Invoice FIRST -->
+      <h2>Create Invoice</h2>
+      <form id="invoiceForm" class="form" autocomplete="off">
+        <label>Customer:</label>
+        <input id="customer" type="text" required />
+
+        <label>Date:</label>
+        <input id="date" type="date" required />
+
+        <div class="form-actions">
+          <button id="createBtn" type="submit" class="btn">
+            Create Invoice
+          </button>
+          <button id="createClear" type="button" class="btn btn-muted">
+            Clear
+          </button>
+        </div>
+
+        <div id="formMsg" class="msg" hidden></div>
+      </form>
+
+      <hr style="margin: 25px 0; opacity: 0.4" />
+
+      <!-- Invoice List BELOW -->
+      <h2>Invoice List</h2>
+
+      <div class="controls">
+        <button id="loadBtn" class="btn">Load Invoices</button>
+        <button id="clearBtn" class="btn btn-muted">Clear Table</button>
+      </div>
+      <br />
+
+      <table id="invoiceTable" class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div id="listMsg" class="msg" hidden></div>
+    </div>
+
+    <!-- EDIT POPUP MODAL -->
+    <div id="editModal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Edit Invoice</h3>
+
+        <label>Customer:</label>
+        <input id="editCustomer" type="text" />
+
+        <label>Date:</label>
+        <input id="editDate" type="date" />
+
+        <div class="form-actions">
+          <button id="updateBtn" class="btn">Update</button>
+          <button id="modalClose" class="btn btn-muted">Cancel</button>
+        </div>
+
+        <div id="modalMsg" class="msg" hidden></div>
+      </div>
+    </div>
+
+    <script src="{% static 'app.js' %}"></script>
+  </body>
+</html>

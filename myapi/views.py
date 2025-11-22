@@ -1,83 +1,97 @@
+from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .models import *
-from .serializers import *
+from .models import Invoice, InvoiceDetails
+from .serializers import InvoiceSerializer, InvoiceDetailsSerializer
 
 
+def home(request):
+    """
+    Render the frontend index.html placed at:
+    myapi/templates/index.html
+    """
+    return render(request, "index.html")
 
-@api_view(['GET','POST'])
+
+# Invoice endpoints
+@api_view(['GET', 'POST'])
 def invoice_list(request):
+    """
+    GET:  return list of invoices
+    POST: create a new invoice, return created object (201)
+    """
     if request.method == 'GET':
-        invoice = Invoice.objects.all()
-        serializers  = InvoiceSerializer(invoice, many=True)
-        return Response(serializers.data)
-    if request.method == 'POST':
-        serializer = InvoiceSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        invoices = Invoice.objects.all()
+        serializer = InvoiceSerializer(invoices, many=True)
+        return Response(serializer.data)
+
+    # POST
+    serializer = InvoiceSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET','PUT','DELETE'])
-def edit_invoice(request,pk):
-    try:
-        invoice = Invoice.objects.get(pk=pk)
-    except Invoice.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    
+@api_view(['GET', 'PUT', 'DELETE'])
+def edit_invoice(request, pk):
+    """
+    GET:  retrieve single invoice
+    PUT:  update invoice (partial updates via sending only fields is allowed if serializer supports it)
+    DELETE: delete invoice
+    """
+    invoice = get_object_or_404(Invoice, pk=pk)
+
     if request.method == 'GET':
         serializer = InvoiceSerializer(invoice)
         return Response(serializer.data)
-    
+
     if request.method == 'PUT':
         serializer = InvoiceSerializer(invoice, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-    
-    if request.method == 'DELETE':
-        invoice.delete()
-        return Response('Deleted Successful', status=status.HTTP_204_NO_CONTENT)
-    
-
-
-@api_view(['GET','POST'])
-def invoice_details_list(request):
-    if request.method == 'GET':
-        invoice_details = InvoiceDetails.objects.all()
-        serializers  = InvoiceDetailsSerializer(invoice_details, many=True)
-        return Response(serializers.data)
-    if request.method == 'POST':
-        serializer = InvoiceDetailsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-
-@api_view(['GET','PUT','DELETE'])
-def edit_invoice_details(request,pk):
-
-    try:
-        invoice = InvoiceDetails.objects.get(pk=pk)
-    except InvoiceDetails.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    if request.method == 'GET':
-        serializer = InvoiceDetailsSerializer(invoice)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
-    
+
+    # DELETE
+    invoice.delete()
+    return Response({'detail': 'Deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+# InvoiceDetails endpoints
+@api_view(['GET', 'POST'])
+def invoice_details_list(request):
+    """
+    GET:  list invoice details
+    POST: create a new invoice detail
+    """
+    if request.method == 'GET':
+        details = InvoiceDetails.objects.all()
+        serializer = InvoiceDetailsSerializer(details, many=True)
+        return Response(serializer.data)
+
+    serializer = InvoiceDetailsSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def edit_invoice_details(request, pk):
+    """
+    GET/PUT/DELETE for InvoiceDetails
+    """
+    detail = get_object_or_404(InvoiceDetails, pk=pk)
+
+    if request.method == 'GET':
+        serializer = InvoiceDetailsSerializer(detail)
+        return Response(serializer.data)
+
     if request.method == 'PUT':
-        serializer = InvoiceDetailsSerializer(invoice, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-    
-    if request.method == 'DELETE':
-        invoice.delete()
-        return Response('Deleted Successful', status=status.HTTP_204_NO_CONTENT)
+        serializer = InvoiceDetailsSerializer(detail, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    detail.delete()
+    return Response({'detail': 'Deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
