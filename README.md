@@ -22,7 +22,10 @@ pip install -r requirements.txt
 ```
 3. **Run Migrations**: 
 ```bash 
-python manage.py makemigrations && python manage.py migrate
+python manage.py makemigrations 
+```
+```bash 
+python manage.py migrate
 ```
 4. **Start the Development Server**: 
 ```bash 
