@@ -12,10 +12,22 @@ This Django-based backend API project serves as an Invoice Management System, pr
 
 ## Setup
 
-1. **Clone the Repository**: ```bash git clone git@github.com:Pro-Ace-grammer/Invoice-API.git```
-2. **Install Dependencies**: ```bash pip install -r requirements.txt```
-3. **Run Migrations**: ```bash python manage.py makemigrations && python manage.py migrate```
-4. **Start the Development Server**: ```bash python manage.py runserver```
+1. **Clone the Repository**:
+ ```bash 
+ git clone git@github.com:Pro-Ace-grammer/Invoice-API.git
+ ```
+2. **Install Dependencies**: 
+```bash 
+pip install -r requirements.txt
+```
+3. **Run Migrations**: 
+```bash 
+python manage.py makemigrations && python manage.py migrate
+```
+4. **Start the Development Server**: 
+```bash 
+python manage.py runserver
+```
 
 ## Endpoints
 
