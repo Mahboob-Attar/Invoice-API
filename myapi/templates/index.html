@@ -15,8 +15,9 @@
     </div>
 
     <div class="container">
-      <!-- Create Invoice FIRST -->
+      <!-- SECTION 1: Create Invoice -->
       <h2>Create Invoice</h2>
+
       <form id="invoiceForm" class="form" autocomplete="off">
         <label>Customer:</label>
         <input id="customer" type="text" required />
@@ -25,26 +26,56 @@
         <input id="date" type="date" required />
 
         <div class="form-actions">
-          <button id="createBtn" type="submit" class="btn">
-            Create Invoice
-          </button>
-          <button id="createClear" type="button" class="btn btn-muted">
-            Clear
-          </button>
+          <button id="createBtn" type="submit" class="btn">Create Invoice</button>
+          <button id="createClear" type="button" class="btn btn-muted">Clear</button>
         </div>
 
         <div id="formMsg" class="msg" hidden></div>
       </form>
 
-      <hr style="margin: 25px 0; opacity: 0.4" />
+      <hr style="margin:25px 0; opacity:0.4" />
 
-      <!-- Invoice List BELOW -->
+      <!-- SECTION 2: Add Invoice Items -->
+      <h2>Add Items to Invoice</h2>
+
+      <form id="itemForm" class="form" autocomplete="off">
+
+        <label>Invoice ID:</label>
+        <input id="invoiceId" type="number" required />
+
+        <label>Item Name:</label>
+        <input id="itemName" type="text" required />
+
+        <label>Price:</label>
+        <input id="price" type="number" step="0.01" required />
+
+        <label>Quantity:</label>
+        <input id="qty" type="number" required />
+
+        <label>Tax %:</label>
+        <input id="tax" type="number" value="0" />
+
+        <label>Discount:</label>
+        <input id="discount" type="number" value="0" />
+
+        <div class="form-actions">
+          <button id="addItemBtn" type="submit" class="btn">Add Item</button>
+          <button id="clearItemBtn" type="button" class="btn btn-muted">Clear</button>
+        </div>
+
+        <div id="itemMsg" class="msg" hidden></div>
+      </form>
+
+      <hr style="margin:25px 0; opacity:0.4" />
+
+      <!-- SECTION 3: Invoice List -->
       <h2>Invoice List</h2>
 
       <div class="controls">
         <button id="loadBtn" class="btn">Load Invoices</button>
         <button id="clearBtn" class="btn btn-muted">Clear Table</button>
       </div>
+
       <br />
 
       <table id="invoiceTable" class="table">
@@ -62,7 +93,7 @@
       <div id="listMsg" class="msg" hidden></div>
     </div>
 
-    <!-- EDIT POPUP MODAL -->
+    <!-- SECTION 4: EDIT INVOICE POPUP -->
     <div id="editModal" class="modal hidden">
       <div class="modal-content">
         <h3>Edit Invoice</h3>
@@ -79,6 +110,18 @@
         </div>
 
         <div id="modalMsg" class="msg" hidden></div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: VIEW DETAILS POPUP -->
+    <div id="detailsModal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Invoice Details</h3>
+
+        <div id="detailsBody"></div>
+
+        <button id="pdfBtn" class="btn">Download PDF</button>
+        <button id="detailsClose" class="btn btn-muted">Close</button>
       </div>
     </div>
 
